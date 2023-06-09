@@ -34,8 +34,8 @@
 		<addForeignKeyConstraint
 			baseTableName="books" baseColumnNames="person_id"
 			constraintName="FK_PERSON_ID" referencedTableName="people"
-			referencedColumnNames="id" />
-
+			referencedColumnNames="id" onDelete="SET NULL"/>
+			
 	</changeSet>
 
 </databaseChangeLog>

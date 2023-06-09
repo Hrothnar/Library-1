@@ -25,12 +25,12 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 @EnableWebMvc
 @Import(value = MvcConfig.class)
 @ComponentScan("com.tk.neo")
-@PropertySource(value = {"classpath:liquibase.properties", "classpath:app.properties"})
+@PropertySource(value = {"classpath:liquibase.properties"})
 public class SpringConfig implements WebMvcConfigurer {
 	private final ApplicationContext applicationContext;
 	@Value("${url}")
 	private String url;
-	@Value("${username_bd}")
+	@Value("${username_db}")
 	private String username;
 	@Value("${password}")
 	private String password;

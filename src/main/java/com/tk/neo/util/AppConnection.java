@@ -12,7 +12,7 @@ public class AppConnection {
 	private static Connection connection;
 	@Value("${url}")
 	private String url;
-	@Value("${username_bd}")
+	@Value("${username_db}")
 	private String username;
 	@Value("${password}")
 	private String password;

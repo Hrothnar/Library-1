@@ -50,5 +50,11 @@ public class PersonDAO implements PersonRepository {
 		}
 		return new Person();
 	}
+	
+	public boolean isExist(Person person) {
+		String sql = "SELECT * FROM people WHERE name = ? AND birth_year = ?;";
+		Optional<Person> optional = jdbcTemplate.query(sql, new PersonMapper(), person.getName(), person.getBirthYear()).stream().findAny();
+		return optional.isPresent();	
+	}
 
 }

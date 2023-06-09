@@ -12,7 +12,6 @@ public class Book {
 	@NotEmpty(message = "Author should not be empty")
 	@Size(min = 2, max = 32, message = "Check the entered data")
 	private String author;
-	@NotEmpty(message = "Year should not be empty")
 	@Max(value = 2023)
 	private int year;
 	private long personId;
