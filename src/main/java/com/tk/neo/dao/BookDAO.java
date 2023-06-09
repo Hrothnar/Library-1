@@ -33,7 +33,7 @@ public class BookDAO implements BookRepository {
 				book.setId(rs.getLong("id"));
 				book.setTitle(rs.getString("title"));
 				book.setAuthor(rs.getString("author"));
-				book.setYear(rs.getInt("age"));
+				book.setYear(rs.getInt("year"));
 				book.setPersonId(rs.getLong("person_id"));
 				books.add(book);
 			}
@@ -53,7 +53,7 @@ public class BookDAO implements BookRepository {
 				book.setId(rs.getLong("id"));
 				book.setTitle(rs.getString("title"));
 				book.setAuthor(rs.getString("author"));
-				book.setYear(rs.getInt("age"));
+				book.setYear(rs.getInt("year"));
 				book.setPersonId(rs.getLong("person_id"));
 				books.add(book);
 			}
@@ -64,7 +64,7 @@ public class BookDAO implements BookRepository {
 	}
 
 	public void save(Book book) {
-		String sql = "INSERT INTO books (title, author, age) VALUES (?, ?, ?);";
+		String sql = "INSERT INTO books (title, author, year) VALUES (?, ?, ?);";
 		try (PreparedStatement statement = appConnection.getConnection().prepareStatement(sql)) {
 			statement.setString(1, book.getTitle());
 			statement.setString(2, book.getAuthor());
@@ -85,7 +85,7 @@ public class BookDAO implements BookRepository {
 			book.setId(rs.getLong("id"));
 			book.setTitle(rs.getString("title"));
 			book.setAuthor(rs.getString("author"));
-			book.setYear(rs.getInt("age"));
+			book.setYear(rs.getInt("year"));
 			book.setPersonId(rs.getLong("person_id"));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,7 +116,7 @@ public class BookDAO implements BookRepository {
 	}
 
 	public void update(long id, Book book) {
-		String sql = "UPDATE books SET title = ?, author = ?, age = ? WHERE id = ?;";
+		String sql = "UPDATE books SET title = ?, author = ?, year = ? WHERE id = ?;";
 		try (PreparedStatement statement = appConnection.getConnection().prepareStatement(sql)) {
 			statement.setString(1, book.getTitle());
 			statement.setString(2, book.getAuthor());

@@ -13,7 +13,7 @@
 	<div th:if="${person.getId() == 0}">
 	<h4>This book is free. Do you want to appoint it to someone?</h4>
 	<label for="person">Choose a person:</label>
-	<select th:object="${person}" th:name="person_id" id="person">
+	<select th:object="${person}" th:name="person_id" id="person" required size="1">
 		<option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getName()} + ', ' + ${person.getBirthYear()}"></option>
 	</select>
 	<input type="submit" value="Appoint person"></input>

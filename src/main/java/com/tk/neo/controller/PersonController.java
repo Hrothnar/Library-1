@@ -1,8 +1,5 @@
 package com.tk.neo.controller;
 
-
-
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.tk.neo.dao.BookDAO;
 import com.tk.neo.dao.PersonDAO;
 import com.tk.neo.model.Person;
+import com.tk.neo.util.PersonValidator;
 
 
 @Controller
@@ -27,11 +25,13 @@ import com.tk.neo.model.Person;
 public class PersonController {
 	private final PersonDAO personDAO;
 	private final BookDAO bookDAO;
+	private final PersonValidator personValidator;
 
 	@Autowired
-	public PersonController(PersonDAO personDAO, BookDAO bookDAO) {
+	public PersonController(PersonDAO personDAO, BookDAO bookDAO, PersonValidator personValidator) {
 		this.personDAO = personDAO;
 		this.bookDAO = bookDAO;
+		this.personValidator = personValidator;
 	}
 	
 	@GetMapping("/menu")
@@ -65,6 +65,7 @@ public class PersonController {
 	
 	@PostMapping()
 	public String saveCreation(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
+		personValidator.validate(person, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "person/create";
 		}
@@ -80,6 +81,7 @@ public class PersonController {
 	
 	@PutMapping("/{id}")
 	public String saveUpdation(@PathVariable("id") long id, @ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
+		personValidator.validate(person, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "person/update";
 		}
