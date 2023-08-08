@@ -31,8 +31,8 @@ public class Person {
 	private String name;
 	@Column(name = "date_of_birth", nullable = false, unique = false, table = "people", updatable = true, insertable = true)
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(fallbackPatterns = {"dd.MM.yyyy"} )
-	private Date dateOfBirht; // Type "DATE" is used in PostgreSQL for keeping simple dates like following - (06.08.23)
+	@DateTimeFormat(fallbackPatterns = {"dd.MM.yyyy"})
+	private Date dateOfBirth; // Type "DATE" is used in PostgreSQL for keeping simple dates like following - (06.08.23)
 	@OneToMany(cascade = {}, fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = false, targetEntity = Book.class)
 	private Set<Book> books = new HashSet<>();
 	
@@ -54,10 +54,6 @@ public class Person {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -66,12 +62,12 @@ public class Person {
 		this.name = name;
 	}
 
-	public Date getDateOfBirht() {
-		return dateOfBirht;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
 
-	public void setDateOfBirht(Date dateOfBirht) {
-		this.dateOfBirht = dateOfBirht;
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public Set<Book> getBooks() {
@@ -81,6 +77,7 @@ public class Person {
 	public void setBooks(Set<Book> books) {
 		this.books = books;
 	}
+	
 	
 	
 }

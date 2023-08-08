@@ -6,8 +6,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import com.tk.neo.model.entity.Book;
-
 public class BookDTO {
 	public long id;
 	@NotEmpty(message = "Title should not be empty")
@@ -20,25 +18,6 @@ public class BookDTO {
 	public int yearOfPublishing;
 	public Date takingTime; 
 	public PersonDTO personDTO;
-	
-	public static BookDTO toDto(Book book) {
-		BookDTO bookDTO = new BookDTO();
-		bookDTO.id = book.getId();
-		bookDTO.title = book.getTitle();
-		bookDTO.author = book.getAuthor();
-		bookDTO.yearOfPublishing = book.getYearOfPublishing();
-		bookDTO.takingTime = book.getTakingTime();
-		bookDTO.personDTO = PersonDTO.toDto(book.getPerson());
-		return bookDTO;
-	}
-	
-	public static Book toEntity(BookDTO bookDTO) {
-		Book book = new Book();
-		book.setTitle(bookDTO.title);
-		book.setAuthor(bookDTO.author);
-		book.setYearOfPublishing(bookDTO.yearOfPublishing);
-		return book;
-	}
 	
 	public boolean isExpired() {
 		return takingTime.after(new Date()); //TODO
@@ -91,7 +70,6 @@ public class BookDTO {
 	public void setPersonDTO(PersonDTO personDTO) {
 		this.personDTO = personDTO;
 	}
-	
 	
 	
 }

@@ -26,9 +26,11 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import liquibase.integration.spring.SpringLiquibase;
+
 @Configuration
 @Import(value = MvcConfig.class)
-@PropertySource(value = {"classpath:liquibase.properties", "classpath:hibernate.properties"})
+@PropertySource(value = {"classpath:hibernate.properties"})
 @ComponentScan("com.tk.neo")
 @EnableWebMvc
 @EnableTransactionManagement
@@ -72,6 +74,7 @@ public class SpringConfig implements WebMvcConfigurer {
 	public void configureViewResolvers(ViewResolverRegistry registry) {
 		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
 		resolver.setTemplateEngine(templateEngine());
+		resolver.setCharacterEncoding("UTF-8");
 		registry.viewResolver(resolver);
 	}
 
@@ -105,6 +108,14 @@ public class SpringConfig implements WebMvcConfigurer {
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
 		transactionManager.setSessionFactory(sessionFactory().getObject());
 		return transactionManager;
+	}
+	
+	@Bean
+	public SpringLiquibase liquibase() {
+	    SpringLiquibase liquibase = new SpringLiquibase();
+	    liquibase.setChangeLog("liquibase/master.xml");
+	    liquibase.setDataSource(dataSource());
+	    return liquibase;
 	}
 
 }

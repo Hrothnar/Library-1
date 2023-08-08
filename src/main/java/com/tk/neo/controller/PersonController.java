@@ -47,7 +47,7 @@ public class PersonController {
 	
 	@GetMapping("/{id}")
 	public String show(@PathVariable("id") long id, Model model) {
-		PersonDTO personDTO = personService.getPerson(id);
+		PersonDTO personDTO = personService.getPerson(id, true);
 		model.addAttribute("person", personDTO);
 		model.addAttribute("books", personDTO.books);
 		return "person/show";
@@ -55,7 +55,7 @@ public class PersonController {
 	
 	@GetMapping("/{id}/update")
 	public String update(@PathVariable("id") long id, Model model) {
-		PersonDTO personDTO = personService.getPerson(id);
+		PersonDTO personDTO = personService.getPerson(id, false);
 		model.addAttribute("person", personDTO);
 		return "person/update";
 	}

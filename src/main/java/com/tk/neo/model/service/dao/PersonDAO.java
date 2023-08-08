@@ -1,7 +1,6 @@
 package com.tk.neo.model.service.dao;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,16 +19,13 @@ public class PersonDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public List<PersonDTO> getAllPeople() {
+	public List<Person> getAllPeople() {
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "FROM Person";
-		List<Person> people = session.createQuery(hql, Person.class).getResultList();
-		return people.stream()
-				.map(PersonDTO::toDto)
-				.collect(Collectors.toList());
+		return session.createQuery(hql, Person.class).getResultList();
 	}
 
-	public Person findPerson(long id) {
+	public Person getPerson(long id) {
 		Session session = sessionFactory.getCurrentSession();
 		Person person = session.get(Person.class, id);
 		if (person == null) {
@@ -39,20 +35,19 @@ public class PersonDAO {
 	}
 
 	public void savePerson(PersonDTO personDTO) {
-		Person person = PersonDTO.toEntity(personDTO);
 		Session session = sessionFactory.getCurrentSession();
+		Person person = new Person();
+		person.setName(personDTO.name);
+		person.setDateOfBirth(personDTO.dateOfBirth);
 		session.persist(person);		
 	}
 
-	public void removePerson(Person person) {
+	public void removePerson(long id) {
 		Session session = sessionFactory.getCurrentSession();
+		Person person = getPerson(id);
+		person.getBooks().stream()
+						.forEach(e -> e.setPerson(null));
 		session.remove(person);
-	}
-
-	public void updatePerson(long id, PersonDTO personDTO) {
-		Person person = findPerson(id);
-		person.setDateOfBirht(personDTO.dateOfBirht);
-		person.setName(personDTO.name);
 	}
 
 	

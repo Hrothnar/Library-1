@@ -34,7 +34,7 @@ public class Book {
 	@Max(value = 2023)
 	@Column(name = "year_of_publishing", nullable = true, unique = false, table = "books", updatable = true, insertable = true)
 	private int yearOfPublishing;
-	@Column(name = "taking_time", nullable = true, unique = false, table = "books", updatable = false, insertable = true)
+	@Column(name = "taking_time", nullable = true, unique = false, table = "books", updatable = true, insertable = true)
 	@Temporal(TemporalType.TIMESTAMP) 
 	private Date takingTime; // Type "TIMESTAMP" is used in PostgreSQL for keeping seconds amount passed since January 1st 2000 
 	@ManyToOne(cascade = {}, fetch = FetchType.LAZY, targetEntity = Person.class)
@@ -47,10 +47,6 @@ public class Book {
 		
 	public long getId() {
 		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getTitle() {

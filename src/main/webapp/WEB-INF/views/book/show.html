@@ -9,8 +9,11 @@
 	<form th:method="POST" th:action="@{/book/{id}/attach(id=${book.id})}">	
 	<h3 th:text="${book.title + ', ' + book.author + ', ' + book.yearOfPublishing}"></h3>
 	<hr/>
-	<div th:if="${person == null}" th:text="'The book is now with ' + ${person.name} + ', ' + ${person.dateOfBirth}">
-		<a th:text="'Time of expiration is:' + ${book.takingTime + ', ' + ${book.isExpired()}"></a>
+	<div th:if="${person != null}">
+		<p th:text="'The book is now with ' + ${person.name} + ', ' + ${person.dateOfBirth}"></p>
+		<span th:style="${book.isExpired() ? 'color: red;' : 'color: black;'}">
+			<p th:text="'Time of expiration is: ' + ${book.takingTime}"></p>
+		</span>
 	</div>
 	<div th:if="${person == null}">
 	<h4>This book is free. Do you want to appoint it to someone?</h4>

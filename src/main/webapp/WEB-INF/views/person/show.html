@@ -14,7 +14,7 @@
 		<a th:text="${book.title + ', ' + book.author + ', ' + book.yearOfPublishing}"></a>
 	</div>
 	<hr/>
-	<form th:method="GET" th:action="@{/person/{id}/update(id=${person.id)}">
+	<form th:method="GET" th:action="@{/person/{id}/update(id=${person.id})}">
 		<input type="submit" value="Edit person"></input>
 	</form>
 	<br/>

@@ -15,9 +15,9 @@
 		<input type="text" name="author" th:field="*{author}" id="author"></input>
 		<div style="color: red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
 		<br/> 
-		<label for="yearOfPuplishing">Edit year of publishing:</label> 
-		<input type="text" name="yearOfPuplishing" th:field="*{yearOfPuplishing}" id="yearOfPuplishing"></input>
-		<div style="color: red" th:if="${#fields.hasErrors('yearOfPuplishing')}" th:errors="*{yearOfPuplishing}"></div>
+		<label for="yearOfPublishing">Edit year of publishing:</label> 
+		<input type="text" name="yearOfPublishing" th:field="*{yearOfPublishing}" id="yearOfPublishing"></input>
+		<div style="color: red" th:if="${#fields.hasErrors('yearOfPublishing')}" th:errors="*{yearOfPublishing}"></div>
 		<br/> 
 		<br/> 
 		<input type="submit" value="Confirm edit"></input>

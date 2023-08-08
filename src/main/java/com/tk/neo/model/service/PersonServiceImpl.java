@@ -1,6 +1,7 @@
 package com.tk.neo.model.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tk.neo.model.dto.PersonDTO;
 import com.tk.neo.model.entity.Person;
+import com.tk.neo.model.mapper.PersonMapper;
 import com.tk.neo.model.service.dao.PersonDAO;
 import com.tk.neo.model.service.interfaccia.PersonService;
 
@@ -23,13 +25,16 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public List<PersonDTO> getAllPeople() {
-		return personDAO.getAllPeople();
+	 List<Person> people = personDAO.getAllPeople();
+		return people.stream()
+					.map(PersonMapper::toLazy)
+					.collect(Collectors.toList());
 	}
 
 	@Override
-	public PersonDTO getPerson(long id) {
-		Person person = personDAO.findPerson(id);
-		return PersonDTO.toDto(person);
+	public PersonDTO getPerson(long id, boolean eager) {
+		Person person = personDAO.getPerson(id);
+		return eager ? PersonMapper.toEager(person) : PersonMapper.toLazy(person);
 	}
 
 	@Override
@@ -39,14 +44,14 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public void removePerson(long id) {
-		Person person = personDAO.findPerson(id);
-		person.getBooks().stream().forEach(e -> e.getPerson().removeBook(e));
-		personDAO.removePerson(person);
+		personDAO.removePerson(id);
 	}
 
 	@Override
 	public void updatePerson(long id, PersonDTO personDTO) {
-		personDAO.updatePerson(id, personDTO);
+		Person person = personDAO.getPerson(id);
+		person.setDateOfBirth(personDTO.dateOfBirth);
+		person.setName(personDTO.name);
 	}
 	
 

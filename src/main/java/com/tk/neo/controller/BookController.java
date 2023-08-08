@@ -37,8 +37,8 @@ public class BookController {
 
 	@GetMapping("/all")
 	public String showAll(@RequestParam(name = "page", required = false) String page, Model model) {
-		List<BookDTO> books = bookService.getAllBooks(page, BOOKS_PER_PAGE);
-		model.addAttribute("books", books);
+		List<BookDTO> booksDTO = bookService.getAllBooks(page, BOOKS_PER_PAGE);
+		model.addAttribute("books", booksDTO);
 		return "book/all";
 	}
 
@@ -71,10 +71,10 @@ public class BookController {
 
 	@GetMapping("/{id}")
 	public String show(@PathVariable("id") long id, Model model) {
-		BookDTO bookDTO = bookService.getBook(id);
+		BookDTO bookDTO = bookService.getBook(id, true);
 		List<PersonDTO> peopleDTO = personService.getAllPeople();
-		model.addAttribute("book", bookDTO );
-		model.addAttribute("person", bookDTO .personDTO);
+		model.addAttribute("book", bookDTO);
+		model.addAttribute("person", bookDTO.personDTO);
 		model.addAttribute("people", peopleDTO);
 		return "book/show";
 	}
@@ -94,7 +94,7 @@ public class BookController {
 
 	@GetMapping("/{id}/update")
 	public String updateBook(@PathVariable("id") long id, Model model) {
-		BookDTO bookDTO = bookService.getBook(id);
+		BookDTO bookDTO = bookService.getBook(id, false);
 		model.addAttribute("book", bookDTO);
 		return "book/update";
 	}
