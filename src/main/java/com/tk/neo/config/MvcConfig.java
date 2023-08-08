@@ -6,8 +6,9 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import org.springframework.web.filter.*;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class MvcConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -24,7 +25,7 @@ public class MvcConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 
 	@Override
 	protected String[] getServletMappings() {
-		return new String[] { "/" };
+		return new String[] {"/"};
 	}
 
 	@Override

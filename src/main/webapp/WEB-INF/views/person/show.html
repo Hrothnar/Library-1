@@ -6,19 +6,19 @@
 </head>
 
 <body>
-	<h3 th:text="${person.getName()} + ', ' + ${person.getBirthYear()}">0</h3>
+	<h3 th:text="${person.name} + ', ' + ${person.dateOfBirth}"></h3>
 	<hr/>
 	<div th:if="${books.size() == 0}" th:text="'Does not have any books yet'"></div>
 	<p th:if="${books.size() != 0}">Books:</p>
 	<div th:if="${books.size() != 0}" th:each="book : ${books}">
-		<a th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">Person</a>
+		<a th:text="${book.title + ', ' + book.author + ', ' + book.yearOfPublishing}"></a>
 	</div>
 	<hr/>
-	<form th:method="GET" th:action="@{/person/{id}/update(id=${person.getId()})}">
+	<form th:method="GET" th:action="@{/person/{id}/update(id=${person.id})}">
 		<input type="submit" value="Edit person"></input>
 	</form>
 	<br/>
-	<form th:method="DELETE" th:action="@{/person/{id}(id=${person.getId()})}">
+	<form th:method="DELETE" th:action="@{/person/{id}(id=${person.id})}">
 		<input type="submit" value="Delete person"></input>
 	</form>
 </body>

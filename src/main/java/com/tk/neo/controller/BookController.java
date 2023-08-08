@@ -1,5 +1,7 @@
 package com.tk.neo.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,83 +16,101 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.tk.neo.dao.BookDAO;
-import com.tk.neo.dao.PersonDAO;
-import com.tk.neo.model.Book;
-import com.tk.neo.model.Person;
+import com.tk.neo.model.dto.BookDTO;
+import com.tk.neo.model.dto.PersonDTO;
+import com.tk.neo.model.service.interfaccia.BookService;
+import com.tk.neo.model.service.interfaccia.PersonService;
 
 @Controller
 @RequestMapping("/book")
 public class BookController {
-	private final BookDAO bookDAO;
-	private final PersonDAO personDAO;
+	private final BookService bookService;
+	private final PersonService personService;
+	
+	private static final String BOOKS_PER_PAGE = "3";
 
 	@Autowired
-	public BookController(BookDAO bookDAO, PersonDAO personDAO) {
-		this.bookDAO = bookDAO;
-		this.personDAO = personDAO;
+	public BookController(BookService bookService, PersonService personService) {
+		this.bookService = bookService;
+		this.personService = personService;
 	}
 
 	@GetMapping("/all")
-	public String showAll(Model model) {
-		model.addAttribute("books", bookDAO.getAll());
+	public String showAll(@RequestParam(name = "page", required = false) String page, Model model) {
+		List<BookDTO> booksDTO = bookService.getAllBooks(page, BOOKS_PER_PAGE);
+		model.addAttribute("books", booksDTO);
 		return "book/all";
 	}
 
+	@GetMapping("/find")
+	public String find() {
+		return "book/find";
+	}
+
+	@PostMapping("/look")
+	public String lookForBook(@RequestParam(name = "search") String search, Model model) {
+		List<BookDTO> books = bookService.findBooks(search);
+		model.addAttribute("books", books);
+		return books.isEmpty() ? "book/not_found" : "book/all";
+	}
+	
+
 	@GetMapping("/create")
-	public String create(@ModelAttribute("book") Book book) {
+	public String create(@ModelAttribute("book") BookDTO bookDTO) {
 		return "book/create";
 	}
 
 	@PostMapping()
-	public String saveCreation(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+	public String saveCreation(@ModelAttribute("book") @Valid BookDTO bookDTO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "book/create";
 		}
-		bookDAO.save(book);
-		return "redirect:/person/menu";
+		bookService.saveBook(bookDTO);
+		return "redirect:/";
 	}
 
 	@GetMapping("/{id}")
 	public String show(@PathVariable("id") long id, Model model) {
-		Book book = bookDAO.getById(id);
-		Person person = personDAO.getById(book.getPersonId());
-		model.addAttribute("book", book);
-		model.addAttribute("person", person);
-		model.addAttribute("people", personDAO.getAll());
+		BookDTO bookDTO = bookService.getBook(id, true);
+		List<PersonDTO> peopleDTO = personService.getAllPeople();
+		model.addAttribute("book", bookDTO);
+		model.addAttribute("person", bookDTO.personDTO);
+		model.addAttribute("people", peopleDTO);
 		return "book/show";
 	}
 
 	@PostMapping("/{id}/attach")
-	public String attachBook(@PathVariable("id") long id, @RequestParam("person_id") long personId) {
-		bookDAO.attachPerson(id, personId);
+	public String attachBook(@PathVariable("id") long id, @RequestParam("personId") long personId) {
+		bookService.attachBook(id, personId);
 		return "redirect:/book/all";
 	}
+	
 
 	@GetMapping("/{id}/release")
 	public String releaseBook(@PathVariable("id") long id) {
-		bookDAO.releaseBook(id);
+		bookService.releaseBook(id);
 		return "redirect:/book/" + id;
 	}
 
 	@GetMapping("/{id}/update")
 	public String updateBook(@PathVariable("id") long id, Model model) {
-		model.addAttribute("book", bookDAO.getById(id));
+		BookDTO bookDTO = bookService.getBook(id, false);
+		model.addAttribute("book", bookDTO);
 		return "book/update";
 	}
 
 	@PostMapping("/{id}")
-	public String saveUpdation(@PathVariable("id") long id, @ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+	public String saveUpdation(@PathVariable("id") long id, @ModelAttribute("book") @Valid BookDTO bookDTO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "book/update";
 		}
-		bookDAO.update(id, book);
+		bookService.updateBook(id, bookDTO);
 		return "redirect:/book/" + id;
 	}
 
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable("id") long id) {
-		bookDAO.remove(id);
+		bookService.removeBook(id);
 		return "redirect:/book/all";
 	}
 

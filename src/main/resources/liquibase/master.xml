@@ -8,7 +8,10 @@
 	http://www.liquibase.org/xml/ns/pro 
 	http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">
 
-	<include file="/liquibase/init/create_table_people.xml" />
-	<include file="/liquibase/init/create_table_books.xml" />
+	<include file="/liquibase/init/person_table.xml" />
+	<include file="/liquibase/init/book_table.xml" />
+	
+	<include file="/liquibase/data/book_data.sql" />
+	<include file="/liquibase/data/person_data.sql" />
 
 </databaseChangeLog>

@@ -1,5 +1,7 @@
 package com.tk.neo.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,79 +16,74 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.tk.neo.dao.BookDAO;
-import com.tk.neo.dao.PersonDAO;
-import com.tk.neo.model.Person;
-import com.tk.neo.util.PersonValidator;
+import com.tk.neo.model.dto.PersonDTO;
+import com.tk.neo.model.service.interfaccia.PersonService;
+import com.tk.neo.model.util.PersonValidator;
 
 
 @Controller
 @RequestMapping("/person")
 public class PersonController {
-	private final PersonDAO personDAO;
-	private final BookDAO bookDAO;
+	private final PersonService personService;
 	private final PersonValidator personValidator;
 
 	@Autowired
-	public PersonController(PersonDAO personDAO, BookDAO bookDAO, PersonValidator personValidator) {
-		this.personDAO = personDAO;
-		this.bookDAO = bookDAO;
+	public PersonController(PersonService personService, PersonValidator personValidator) {
+		this.personService = personService;
 		this.personValidator = personValidator;
 	}
 	
-	@GetMapping("/menu")
-	public String menu() {
-		return "menu";
+	@GetMapping("/create")
+	public String create(@ModelAttribute("person") PersonDTO personDTO) {
+		return "person/create";
 	}
 	
 	@GetMapping("/all")
 	public String showAll(Model model) {
-		model.addAttribute("people", personDAO.getAll());
+		List<PersonDTO> peopleDTO = personService.getAllPeople();
+		model.addAttribute("people", peopleDTO);
 		return "person/all";
 	}
 	
 	@GetMapping("/{id}")
 	public String show(@PathVariable("id") long id, Model model) {
-		model.addAttribute("person", personDAO.getById(id));
-		model.addAttribute("books", bookDAO.getAllByPersonId(id));
+		PersonDTO personDTO = personService.getPerson(id, true);
+		model.addAttribute("person", personDTO);
+		model.addAttribute("books", personDTO.books);
 		return "person/show";
 	}
 	
 	@GetMapping("/{id}/update")
 	public String update(@PathVariable("id") long id, Model model) {
-		model.addAttribute("person", personDAO.getById(id));
+		PersonDTO personDTO = personService.getPerson(id, false);
+		model.addAttribute("person", personDTO);
 		return "person/update";
 	}
-	
-	@GetMapping("/create")
-	public String create(@ModelAttribute("person") Person person) {
-		return "person/create";
-	}
-	
+		
 	@PostMapping()
-	public String saveCreation(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
-		personValidator.validate(person, bindingResult);
+	public String saveCreation(@ModelAttribute("person") @Valid PersonDTO personDTO, BindingResult bindingResult) {
+//		personValidator.validate(person, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "person/create";
 		}
-		personDAO.save(person);
-		return "redirect:/person/menu";
+		personService.savePerson(personDTO);
+		return "redirect:/";
 	}
 	
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable("id") long id) {
-		personDAO.remove(id);
-		return "redirect:/person/menu";
+		personService.removePerson(id);
+		return "redirect:/";
 	}
 	
 	@PutMapping("/{id}")
-	public String saveUpdation(@PathVariable("id") long id, @ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
-		personValidator.validate(person, bindingResult);
+	public String saveUpdation(@PathVariable("id") long id, @ModelAttribute("person") @Valid PersonDTO personDTO, BindingResult bindingResult) {
+//		personValidator.validate(person, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "person/update";
 		}
-		personDAO.update(id, person);
-		return "redirect:/person/menu";
+		personService.updatePerson(id, personDTO);
+		return "redirect:/";
 	}
 	
 }
