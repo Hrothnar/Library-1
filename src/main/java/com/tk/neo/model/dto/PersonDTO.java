@@ -49,4 +49,13 @@ public class PersonDTO {
 		this.books = books;
 	}
 
+	public String getConvinientDate() {
+		if (dateOfBirth != null) {
+			String dateString = dateOfBirth.toString();
+			String[] split = dateString.split("-");
+			return split[2] + "." + split[1] + "." + split[0];
+		}
+		return null;
+	}
+
 }
