@@ -62,7 +62,7 @@ public class PersonController {
 		
 	@PostMapping()
 	public String saveCreation(@ModelAttribute("person") @Valid PersonDTO personDTO, BindingResult bindingResult) {
-//		personValidator.validate(person, bindingResult);
+		personValidator.validate(personDTO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "person/create";
 		}
@@ -78,7 +78,7 @@ public class PersonController {
 	
 	@PutMapping("/{id}")
 	public String saveUpdation(@PathVariable("id") long id, @ModelAttribute("person") @Valid PersonDTO personDTO, BindingResult bindingResult) {
-//		personValidator.validate(person, bindingResult);
+		personValidator.validate(personDTO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "person/update";
 		}

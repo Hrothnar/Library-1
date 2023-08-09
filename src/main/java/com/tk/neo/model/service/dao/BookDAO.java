@@ -24,8 +24,8 @@ public class BookDAO {
 		Session session = sessionFactory.getCurrentSession();
 		String sql = "SELECT * FROM books ORDER BY year_of_publishing ASC LIMIT :booksPerPage OFFSET (:page - 1) * :booksPerPage";
 		return session.createNativeQuery(sql, Book.class)
-				.setParameter("booksPerPage", convert(page))
-				.setParameter("page", convert(booksPerPage))
+				.setParameter("booksPerPage", convert(booksPerPage))
+				.setParameter("page", convert(page))
 				.getResultList();
 	}
 

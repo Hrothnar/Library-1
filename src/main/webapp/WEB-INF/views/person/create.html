@@ -10,7 +10,7 @@
 		<label for="name">Enter name:</label> <input type="text" name="name" th:field="*{name}" id="name"></input>
 		<div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 		<br/> 
-		<label for="dateOfBirth">Enter date of birth:</label> 
+		<label for="dateOfBirth">Enter date of birth (dd.MM.yyyy):</label> 
 		<input type="text" name="dateOfBirth" th:field="*{dateOfBirth}" id="dateOfBirth"></input>
 		<div style="color: red" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
 		<br/> 

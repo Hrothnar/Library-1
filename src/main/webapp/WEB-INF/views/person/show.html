@@ -6,7 +6,7 @@
 </head>
 
 <body>
-	<h3 th:text="${person.name} + ', ' + ${person.dateOfBirth}"></h3>
+	<h3 th:text="${person.name} + ', ' + ${person.getConvinientDate()}"></h3>
 	<hr/>
 	<div th:if="${books.size() == 0}" th:text="'Does not have any books yet'"></div>
 	<p th:if="${books.size() != 0}">Books:</p>
